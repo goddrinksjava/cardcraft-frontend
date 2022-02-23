@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::view('/', 'welcome');
+Route::view('/admin', 'admin_panel');
+Route::view('/anime/1', 'anime_info');
+Route::view('/about', 'about');
