@@ -9,8 +9,8 @@ class Episode extends Model
 {
     use HasFactory;
 
-    public function serie()
+    public function series()
     {
-        return $this->belongsTo(Serie::class);
+        return $this->belongsTo(Series::class);
     }
 }
