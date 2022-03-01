@@ -1,17 +1,5 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.88.1">
-    <title>Jumbotron Template · Bootstrap v4.6</title>
-
-    <!-- Bootstrap core CSS -->
+@push('styles')
     <link rel="stylesheet" href="{{ asset('css/bootstrap-4.6.1-dist/bootstrap.min.css') }}">
-
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -29,14 +17,16 @@
         }
 
     </style>
+@endpush
 
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="{{ asset('js/bootstrap-4.6.1-dist/bootstrap.bundle.min.js') }}"></script>
+@endpush
 
-    <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="{{ asset('css/anime_info.css') }}">
-</head>
-
-<body>
-
+<x-layout title="Dragon Cube Z">
     @include('shared.navbar')
 
     <main role="main">
@@ -82,19 +72,7 @@
             <hr>
 
         </div> <!-- /container -->
-
     </main>
 
-    <footer class="container">
-        <p>&copy; Company 2017-2021</p>
-    </footer>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
-    </script>
-    <script src="{{ asset('js/bootstrap-4.6.1-dist/bootstrap.bundle.min.js') }}"></script>
-
-</body>
-
-</html>
+    @include("shared.footer")
+</x-layout>

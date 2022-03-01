@@ -1,17 +1,6 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.88.1">
-    <title>About</title>
-
-    <!-- Bootstrap core CSS -->
+@push('styles')
     <link rel="stylesheet" href="{{ asset('css/bootstrap-4.6.1-dist/bootstrap.min.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('css/about.css') }}">
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -29,14 +18,16 @@
         }
 
     </style>
+@endpush
 
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="{{ asset('js/bootstrap-4.6.1-dist/bootstrap.bundle.min.js') }}"></script>
+@endpush
 
-    <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="{{ asset('css/about.css') }}">
-</head>
-
-<body>
-
+<x-layout title="About">
     @include('shared.navbar')
 
     <main role="main">
@@ -235,21 +226,7 @@
             <!-- /END THE FEATURETTES -->
 
         </div><!-- /.container -->
-
-
-        <!-- FOOTER -->
-        <footer class="container">
-            <p class="float-right"><a href="#">Back to top</a></p>
-            <p>&copy; 2017-2021 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
-        </footer>
     </main>
 
-
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
-    </script>
-    <script src="{{ asset('js/bootstrap-4.6.1-dist/bootstrap.bundle.min.js') }}"></script>
-
-</body>
-
-</html>
+    @include("shared.footer")
+</x-layout>
