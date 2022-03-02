@@ -1,10 +1,10 @@
-<x-layout title="Users">
+<x-layout title="Roles">
     @include("shared.navbar")
 
     <div class="bg-white p-8 rounded-md w-full">
         <div class="flex items-center justify-between pb-6">
             <div>
-                <h2 class="text-xl text-gray-600 font-semibold">Users</h2>
+                <h2 class="text-xl text-gray-600 font-semibold">Roles</h2>
             </div>
             <div class="flex items-center justify-between">
                 <div class="flex bg-gray-50 items-center p-2 rounded-md">
@@ -31,15 +31,7 @@
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Profile Picture
-                                </th>
-                                <th
-                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Email
-                                </th>
-                                <th
-                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Email verified at
+                                    Name
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -53,46 +45,19 @@
                         </thead>
 
                         <tbody>
-                            @foreach ($users as $user)
+                            @foreach ($roles as $role)
                                 <tr>
                                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">{{ $user->id }}</p>
+                                        <p class="text-gray-900 whitespace-no-wrap">{{ $role->id }}</p>
                                     </td>
                                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <div class="flex-shrink-0 w-10 h-10">
-                                            <img class="w-full h-full rounded-full" src="{{ $user->profile_pic_url }}"
-                                                alt="Profile Picture" />
-                                        </div>
+                                        <p class="text-gray-900 whitespace-no-wrap">{{ $role->name }}</p>
                                     </td>
                                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">{{ $user->email }}</p>
-                                    </td>
-
-                                    @if (is_null($user->email_verified_at))
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <span
-                                                class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
-                                                <span aria-hidden
-                                                    class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-                                                <span class="relative">Not confirmed</span>
-                                            </span>
-                                        </td>
-                                    @else
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <span
-                                                class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                                <span aria-hidden
-                                                    class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                                <span class="relative">{{ $user->email_verified_at }}</span>
-                                            </span>
-                                        </td>
-                                    @endif
-
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">{{ $user->created_at }}</p>
+                                        <p class="text-gray-900 whitespace-no-wrap">{{ $role->created_at }}</p>
                                     </td>
                                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">{{ $user->updated_at }}</p>
+                                        <p class="text-gray-900 whitespace-no-wrap">{{ $role->updated_at }}</p>
                                     </td>
                                 </tr>
                             @endforeach

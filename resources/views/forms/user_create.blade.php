@@ -2,10 +2,10 @@
     <div class="bg-white dark:bg-gray-900 flex justify-center min-h-screen">
 
 
-        <div class="flex pt-8 lg:pt-0 items-center w-full px-6 mx-auto lg:w-5/12">
+        <div class="flex items-center px-8 lg:px-0 w-full lg:w-1/2">
             <div class="flex-1">
                 <div>
-                    <h2 class="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-700 dark:text-white">
+                    <h2 class="text-5xl font-bold text-gray-700 dark:text-white">
                         Create User
                     </h2>
                     @if ($submitted ?? '' == 'ok')

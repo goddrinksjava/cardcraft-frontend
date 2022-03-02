@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -15,8 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return view('tables.user_table', ['users' => $users]);
+        return view('tables.user_table', ['users' => User::all()]);
     }
 
     /**
@@ -44,7 +44,7 @@ class UserController extends Controller
         ]);
 
         $user = new User();
-        $user->password = $request->password;
+        $user->password = Hash::make($request->newPpasswordassword);
         $user->email = $request->email;
         $user->profile_pic_url = $request->imageUrl;
         if ($request->has('verifiedEmail')) {
@@ -65,7 +65,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return User::find($id)->toJson();
+        return view('tables.user_table', ['users' => [User::find($id)]]);
     }
 
     /**
@@ -76,7 +76,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('forms.user_edit', ['user' => User::find($id)]);
     }
 
     /**
@@ -88,8 +88,14 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'email' => "required|email|unique:users,email,$id|max:40",
+            'password' => 'required|min:6|max:60|same:confirmPassword',
+            'imageUrl' => 'nullable|url'
+        ]);
+
         $user = User::find($id);
-        $user->password = $request->password;
+        $user->password = Hash::make($request->newPpasswordassword);
         $user->email = $request->email;
         $user->profile_pic_url = $request->imageUrl;
         if ($request->has('verifiedEmail')) {
@@ -97,6 +103,7 @@ class UserController extends Controller
         }
         $user->updated_at = Carbon::now();
         $user->update();
+        return view('forms.user_edit', ['user' => User::find($id), 'submitted' => 'ok']);
     }
 
     /**

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +22,4 @@ Route::view('/about', 'about');
 Route::view('/sign-in', 'sign_in');
 
 Route::resource('users', UserController::class);
+Route::resource('roles', RoleController::class);

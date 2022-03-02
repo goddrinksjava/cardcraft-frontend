@@ -1,16 +1,16 @@
-<x-layout title="Create User">
+<x-layout title="Edit User">
     <div class="bg-white dark:bg-gray-900 flex justify-center min-h-screen">
 
 
-        <div class="flex pt-8 lg:pt-0 items-center w-full px-6 mx-auto lg:w-5/12">
+        <div class="flex items-center px-8 lg:px-0 w-full lg:w-1/2">
             <div class="flex-1">
                 <div>
-                    <h2 class="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-700 dark:text-white">
-                        Create User
+                    <h2 class="text-5xl font-bold text-gray-700 dark:text-white">
+                        Edit User
                     </h2>
                     @if ($submitted ?? '' == 'ok')
                         <p class="mt-6 text-sm text-gray-400">
-                            User successfully created
+                            User successfully edited
                         </p>
                     @endif
                 </div>
@@ -29,14 +29,16 @@
                 @endif
 
                 <div class="mt-8">
-                    <form action="/users" method="POST">
+                    <form action="/users/{{ $user->id }}" method="POST">
+                        @method('PUT')
                         @csrf
 
                         <div>
                             <label for="email" class="block mb-2 text-sm text-gray-600 dark:text-gray-200">
                                 Email Address
                             </label>
-                            <input required type="email" name="email" id="email" placeholder="example@example.com"
+                            <input value="{{ $user->email }}" required type="email" name="email" id="email"
+                                placeholder="example@example.com"
                                 class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
                         </div>
 
@@ -56,7 +58,7 @@
                                 </label>
                             </div>
 
-                            <input required type="confirmPassword" name="confirmPassword" id="confirmPassword"
+                            <input required type="password" name="confirmPassword" id="confirmPassword"
                                 placeholder="Confirm Password"
                                 class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
                         </div>
@@ -66,12 +68,14 @@
                                 <label for="imageUrl" class="text-sm text-gray-600 dark:text-gray-200">Image Url</label>
                             </div>
 
-                            <input type="imageUrl" name="imageUrl" id="imageUrl" placeholder="https://picsum.photos/200"
+                            <input value="{{ $user->profile_pic_url }}" type="imageUrl" name="imageUrl" id="imageUrl"
+                                placeholder="https://picsum.photos/200"
                                 class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
                         </div>
 
                         <div class="mt-6">
-                            <input type="checkbox" id="verifiedEmail" name="verifiedEmail" class="mr-1">
+                            <input type="checkbox" id="verifiedEmail" name="verifiedEmail" class="mr-1"
+                                {{ is_null($user->email_verified_at) ? '' : 'checked' }}>
                             <label for="verifiedEmail" class="text-sm text-gray-600 dark:text-gray-200">
                                 Verified Email
                             </label>
@@ -80,7 +84,7 @@
                         <div class="mt-6">
                             <button id="submitButton"
                                 class="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50">
-                                Create
+                                Edit
                             </button>
                         </div>
                     </form>
