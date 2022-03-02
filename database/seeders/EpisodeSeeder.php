@@ -23,6 +23,8 @@ class EpisodeSeeder extends Seeder
             'release_date' => Carbon::create('today noon')->subYears(rand(0, 30))->subDays(rand(0, 364)),
             'video_path' => '/media/videos/' . Str::random(6),
             'serie_id' => $seriesIds->random(1)[0],
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
         ]);
     }
 }

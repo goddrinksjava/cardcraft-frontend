@@ -22,6 +22,8 @@ class SeriesSeeder extends Seeder
             'release_date' => Carbon::create('today noon')->subYears(rand(0, 30))->subDays(rand(0, 364)),
             'score' => (rand(0, 1000) / 100),
             'poster_pic_path' => '/media/images/' . Str::random(6),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
         ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -23,6 +24,8 @@ class ReviewSeeder extends Seeder
             'score' => rand(0, 10),
             'user_id' => $userIds->random(1)[0],
             'serie_id' => $seriesIds->random(1)[0],
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
         ]);
     }
 }
