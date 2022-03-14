@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -26,7 +27,11 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('forms.user_create');
+        $func = function ($r) {
+            return $r->name;
+        };
+
+        return view('forms.user_create', ['roles' => Role::all()->map($func)]);
     }
 
     /**
@@ -37,7 +42,10 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request);
+        return "yo";
         $request->validate([
+            'roles.*' => 'exists:roles,name|distinct',
             'email' => 'required|email|unique:users|max:40',
             'password' => 'required|min:6|max:60|same:confirmPassword',
             'imageUrl' => 'nullable|url'
@@ -52,6 +60,8 @@ class UserController extends Controller
         }
         $user->created_at = Carbon::now();
         $user->updated_at = Carbon::now();
+        $user->roles = $request->roles;
+
         $user->save();
 
         return view('forms.user_create', ['submitted' => 'ok']);
@@ -76,7 +86,18 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        return view('forms.user_edit', ['user' => User::find($id)]);
+        $func = function ($r) {
+            return (object)['name' => $r->name, 'checked' => false];
+        };
+
+        $user = User::find($id);
+        $roles = Role::all()->map($func);
+
+        foreach ($roles as $role) {
+            $role->checked = in_array($role->name, $user->roles);
+        }
+
+        return view('forms.user_edit', ['user' => $user, 'roles' => $roles]);
     }
 
     /**

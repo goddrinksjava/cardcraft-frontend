@@ -81,6 +81,21 @@
                             </label>
                         </div>
 
+                        <fieldset class="mt-6">
+                            <h1>Roles</h1>
+                            @foreach ($roles as $role)
+                                <div class="text-gray-600 dark:text-gray-200">
+                                    <input type="checkbox" id="role_{{ $role->name }}"
+                                        name="roles[{{ $role->name }}]" class="mr-1">
+                                    <label for="role_{{ $role->name }}"
+                                        class="text-sm text-gray-600 dark:text-gray-200"
+                                        {{ $role->checked ? 'checked' : '' }}>
+                                        {{ $role->name }}
+                                    </label>
+                                </div>
+                            @endforeach
+                        </fieldset>
+
                         <div class="mt-6">
                             <button id="submitButton"
                                 class="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50">
