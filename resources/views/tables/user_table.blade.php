@@ -1,5 +1,5 @@
 <x-layout title="Users">
-    @include("shared.navbar")
+    @include('shared.navbar')
 
     <div class="bg-white p-8 rounded-md w-full">
         <div class="flex items-center justify-between pb-6">
@@ -60,8 +60,8 @@
                                     </td>
                                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                         <div class="flex-shrink-0 w-10 h-10">
-                                            <img class="w-full h-full rounded-full" src="{{ $user->profile_pic_url }}"
-                                                alt="Profile Picture" />
+                                            <img class="w-full h-full object-cover rounded-full"
+                                                src="/storage/avatars/{{ $user->id }}" alt="Profile Picture" />
                                         </div>
                                     </td>
                                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">

@@ -15,21 +15,10 @@
                     @endif
                 </div>
 
-                @if ($errors->any())
-                    <div role="alert" class="mt-4">
-                        <div class="bg-rose-800 text-white font-bold rounded-t px-4 py-2">
-                            Errors
-                        </div>
-                        <div class="border border-t-0 border-rose-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
-                            @foreach ($errors->all() as $error)
-                                <p>{{ $error }}</p>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
+                <x-errors></x-errors>
 
                 <div class="mt-8">
-                    <form action="/users/{{ $user->id }}" method="POST">
+                    <form action="/users/{{ $user->id }}" method="POST" enctype="multipart/form-data">
                         @method('PUT')
                         @csrf
 
@@ -47,31 +36,31 @@
                                 <label for="password" class="text-sm text-gray-600 dark:text-gray-200">Password</label>
                             </div>
 
-                            <input required type="password" name="password" id="password" placeholder="Your Password"
+                            <input type="password" name="password" id="password" placeholder="Your Password"
                                 class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
                         </div>
 
                         <div class="mt-6">
-                            <div class="flex justify-between mb-2">
-                                <label for="confirmPassword" class="text-sm text-gray-600 dark:text-gray-200">
-                                    Confirm Password
-                                </label>
-                            </div>
+                            <label for="confirmPassword" class="text-sm text-gray-600 dark:text-gray-200">
+                                Confirm Password
+                            </label>
 
-                            <input required type="password" name="confirmPassword" id="confirmPassword"
+                            <input type="password" name="confirmPassword" id="confirmPassword"
                                 placeholder="Confirm Password"
                                 class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
                         </div>
 
                         <div class="mt-6">
-                            <div class="flex justify-between mb-2">
-                                <label for="imageUrl" class="text-sm text-gray-600 dark:text-gray-200">Image Url</label>
-                            </div>
 
-                            <input value="{{ $user->profile_pic_url }}" type="imageUrl" name="imageUrl" id="imageUrl"
-                                placeholder="https://picsum.photos/200"
+                            <label for="imageFile" class="text-sm text-gray-600 dark:text-gray-200">
+                                Select profile picture
+                            </label>
+
+                            <input value="{{ $user->profile_pic_url }}" type="file" name="imageFile" id="imageFile"
                                 class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
                         </div>
+
+
 
                         <div class="mt-6">
                             <input type="checkbox" id="verifiedEmail" name="verifiedEmail" class="mr-1"
@@ -82,7 +71,7 @@
                         </div>
 
                         <fieldset class="mt-6">
-                            <h1>Roles</h1>
+                            <h1 class="text-xl text-gray-600 dark:text-gray-200">Roles</h1>
                             @foreach ($roles as $role)
                                 <div class="text-gray-600 dark:text-gray-200">
                                     <input type="checkbox" id="role_{{ $role->name }}"

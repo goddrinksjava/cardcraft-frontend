@@ -7,6 +7,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -42,8 +43,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
-        return "yo";
         $request->validate([
             'roles.*' => 'exists:roles,name|distinct',
             'email' => 'required|email|unique:users|max:40',
@@ -54,7 +53,9 @@ class UserController extends Controller
         $user = new User();
         $user->password = Hash::make($request->newPpasswordassword);
         $user->email = $request->email;
-        $user->profile_pic_url = $request->imageUrl;
+
+        Storage::copy('default-avatar.png', 'public/avatars/' . $user->id);
+
         if ($request->has('verifiedEmail')) {
             $user->email_verified_at = Carbon::now();
         }
@@ -64,7 +65,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return view('forms.user_create', ['submitted' => 'ok']);
+        // return view('forms.user_create', ['submitted' => 'ok']);
     }
 
     /**
@@ -94,7 +95,7 @@ class UserController extends Controller
         $roles = Role::all()->map($func);
 
         foreach ($roles as $role) {
-            $role->checked = in_array($role->name, $user->roles);
+            $role->checked = $user->roles->contains($role->name);
         }
 
         return view('forms.user_edit', ['user' => $user, 'roles' => $roles]);
@@ -111,20 +112,45 @@ class UserController extends Controller
     {
         $request->validate([
             'email' => "required|email|unique:users,email,$id|max:40",
-            'password' => 'required|min:6|max:60|same:confirmPassword',
-            'imageUrl' => 'nullable|url'
+            'password' => 'nullable|min:6|max:60|same:confirmPassword',
+            'imageFile' => ['nullable', 'mimes:jpeg,png', 'max:8192']
         ]);
 
+        $func = function ($r) {
+            return (object)['name' => $r->name, 'checked' => false];
+        };
+
         $user = User::find($id);
-        $user->password = Hash::make($request->newPpasswordassword);
+
         $user->email = $request->email;
-        $user->profile_pic_url = $request->imageUrl;
+
+        if ($request->has('password')) {
+            $user->password = Hash::make($request->newPpasswordassword);
+        }
+
+        if ($request->file('imageFile')) {
+            $extension = $request->file('imageFile')->extension();
+
+            $request->file('imageFile')->storeAs(
+                'avatars',
+                $id,
+                'public'
+            );
+        }
+
         if ($request->has('verifiedEmail')) {
             $user->email_verified_at = Carbon::now();
         }
+
         $user->updated_at = Carbon::now();
         $user->update();
-        return view('forms.user_edit', ['user' => User::find($id), 'submitted' => 'ok']);
+
+        $roles = Role::all()->map($func);
+        foreach ($roles as $role) {
+            $role->checked = $user->roles->contains($role->name);
+        }
+
+        return view('forms.user_edit', ['user' => User::find($id), 'roles' => $roles, 'submitted' => 'ok']);
     }
 
     /**

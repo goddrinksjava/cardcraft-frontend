@@ -1,5 +1,30 @@
 @php($routes = [(object) ['name' => 'Rate Your Anime', 'url' => '/'], (object) ['name' => 'About Us', 'url' => 'about'], (object) ['name' => 'Admin Panel', 'url' => 'admin']])
 
+{{-- @push('scripts')
+    <script>
+        const profileButtonShowSubmenu = (ev) => {
+            setTimeout(() => {
+                profileSubmenu.classList.remove('hidden');
+                document.body.addEventListener('click', profileButtonHideSubmenu);
+                profileButton.removeEventListener("click", profileButtonShowSubmenu);
+            }, 0);
+        }
+
+        const profileButtonHideSubmenu = (ev) => {
+            setTimeout(() => {
+                if (profileSubmenu.contains(ev.target)) return;
+                profileSubmenu.classList.add('hidden');
+                document.body.removeEventListener('click', profileButtonHideSubmenu);
+                profileButton.addEventListener("click", profileButtonShowSubmenu);
+            }, 0);
+        }
+
+        if (document.getElementById("profileButton")) {
+            profileButton.addEventListener("click", profileButtonShowSubmenu);
+        }
+    </script>
+@endpush --}}
+
 <nav class="bg-gray-800">
     <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div class="relative flex items-center justify-between h-16">
@@ -57,22 +82,31 @@
                         placeholder="Search...">
                 </div>
 
-                <a href="{{ url('/sign-in') }}"
-                    class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                    Sign in
-                </a>
+                @if (Auth::check())
+                    <a href="/profile" id="profileButton"
+                        class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                        Profile
+                    </a>
 
-                <div class="ml-3 relative">
-                    <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-                        role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
-                            id="user-menu-item-0">Your Profile</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
-                            id="user-menu-item-1">Settings</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
-                            id="user-menu-item-2">Sign out</a>
-                    </div>
-                </div>
+                    {{-- <div class="ml-3 relative">
+                        <div id="profileSubmenu"
+                            class="hidden origin-top-right absolute right-0 mt-6 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                            role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                            <a href="/profile" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
+                                tabindex="-1" id="user-menu-item-0">Your Profile</a>
+                            <a href="/auth/sign-out" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
+                                tabindex="-1" id="user-menu-item-2">Sign out</a>
+                        </div>
+                    </div> --}}
+                @else
+                    <a href="{{ url('/sign-in') }}"
+                        class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                        Sign in
+                    </a>
+                @endif
+
+
+
             </div>
         </div>
     </div>
