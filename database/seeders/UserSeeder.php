@@ -25,6 +25,6 @@ class UserSeeder extends Seeder
             'updated_at' => Carbon::now()
         ]);
 
-        Storage::copy('default-avatar.png', 'public/avatars/' . $id);
+        Storage::copy('public/default-avatar.png', 'public/avatars/' . $id);
     }
 }

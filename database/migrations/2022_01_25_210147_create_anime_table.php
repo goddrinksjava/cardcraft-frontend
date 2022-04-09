@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSeriesGenresTable extends Migration
+class CreateAnimeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateSeriesGenresTable extends Migration
      */
     public function up()
     {
-        Schema::create('series_genres', function (Blueprint $table) {
+        Schema::create('anime', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('series_id')->constrained()->restrictOnUpdate()->cascadeOnDelete();
-            $table->foreignId('genre_id')->constrained()->restrictOnUpdate()->cascadeOnDelete();
+            $table->string('title');
+            $table->longText('synopsis');
+            $table->date('release_date');
+            $table->decimal('score', 3, 2, true);
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ class CreateSeriesGenresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('series_genres');
+        Schema::dropIfExists('anime');
     }
 }

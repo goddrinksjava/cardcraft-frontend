@@ -1,10 +1,28 @@
+@push('scripts')
+    <script>
+        const rows = document.getElementsByClassName('userRow');
+
+        console.log(rows)
+
+        for (const row of rows) {
+            const id = row.id.split(':')[1];
+            row.addEventListener("click", () => {
+                window.location.href = `/admin/users/${id}`;
+            });
+        }
+    </script>
+@endpush
+
 <x-layout title="Users">
     @include('shared.navbar')
 
     <div class="bg-white p-8 rounded-md w-full">
         <div class="flex items-center justify-between pb-6">
-            <div>
-                <h2 class="text-xl text-gray-600 font-semibold">Users</h2>
+            <div class="flex items-center">
+                <h2 class="text-xl text-gray-600 font-semibold pr-2">Anime</h2>
+                <a href="/admin/anime/create">
+                    <img class="h-5 w-5" src="/svg/add.svg" alt="Create new user">
+                </a>
             </div>
             <div class="flex items-center justify-between">
                 <div class="flex bg-gray-50 items-center p-2 rounded-md">
@@ -31,68 +49,59 @@
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Profile Picture
+                                    Poster
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Email
+                                    Title
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Email verified at
+                                    Synopsis
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Created at
+                                    Release Date
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Updated at
+                                    Genres
                                 </th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            @foreach ($users as $user)
-                                <tr>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">{{ $user->id }}</p>
+                            @foreach ($anime as $a)
+                                <tr class="userRow transition hover:bg-slate-50 cursor-pointer"
+                                    id="userId:{{ $a->id }}">
+
+                                    <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                                        <p class="text-gray-900 whitespace-no-wrap">{{ $a->id }}</p>
                                     </td>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <div class="flex-shrink-0 w-10 h-10">
-                                            <img class="w-full h-full object-cover rounded-full"
-                                                src="/storage/avatars/{{ $user->id }}" alt="Profile Picture" />
+
+                                    <td class="px-5 py-2 border-b border-gray-200 text-sm">
+                                        <div class="flex-shrink-0 w-[200px] h-[300px]">
+                                            <img class="w-full h-full object-cover"
+                                                src="/storage/posters/{{ $a->id }}" alt="Poster" />
                                         </div>
                                     </td>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">{{ $user->email }}</p>
+
+                                    <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                                        <p class="text-gray-900 whitespace-no-wrap">{{ $a->title }}</p>
                                     </td>
 
-                                    @if (is_null($user->email_verified_at))
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <span
-                                                class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
-                                                <span aria-hidden
-                                                    class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-                                                <span class="relative">Not confirmed</span>
-                                            </span>
-                                        </td>
-                                    @else
-                                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <span
-                                                class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                                <span aria-hidden
-                                                    class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                                <span class="relative">{{ $user->email_verified_at }}</span>
-                                            </span>
-                                        </td>
-                                    @endif
-
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">{{ $user->created_at }}</p>
+                                    <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                                        <p class="text-gray-900 whitespace-no-wrap">{{ $a->synopsis }}</p>
                                     </td>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">{{ $user->updated_at }}</p>
+
+                                    <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                                        <p class="text-gray-900 whitespace-no-wrap">{{ $a->release_date }}</p>
+                                    </td>
+
+                                    <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                                        @foreach ($a->genres as $genre)
+                                            <p class="text-gray-900 whitespace-no-wrap">{{ $genre->name }}</p>
+                                        @endforeach
                                     </td>
                                 </tr>
                             @endforeach

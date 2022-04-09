@@ -7,9 +7,10 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-class UserController extends Controller
+class UserResourceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +19,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('tables.user_table', ['users' => User::all()]);
+        return view('admin.user.table', ['users' => User::all()]);
     }
 
     /**
@@ -32,7 +33,7 @@ class UserController extends Controller
             return $r->name;
         };
 
-        return view('forms.user_create', ['roles' => Role::all()->map($func)]);
+        return view('admin.user.create', ['roles' => Role::all()->map($func)]);
     }
 
     /**
@@ -47,25 +48,35 @@ class UserController extends Controller
             'roles.*' => 'exists:roles,name|distinct',
             'email' => 'required|email|unique:users|max:40',
             'password' => 'required|min:6|max:60|same:confirmPassword',
-            'imageUrl' => 'nullable|url'
+            'imageUpload' => ['nullable', 'mimes:jpeg,png', 'max:16384']
         ]);
 
         $user = new User();
         $user->password = Hash::make($request->newPpasswordassword);
         $user->email = $request->email;
 
-        Storage::copy('default-avatar.png', 'public/avatars/' . $user->id);
-
         if ($request->has('verifiedEmail')) {
             $user->email_verified_at = Carbon::now();
         }
         $user->created_at = Carbon::now();
         $user->updated_at = Carbon::now();
-        $user->roles = $request->roles;
 
         $user->save();
 
-        // return view('forms.user_create', ['submitted' => 'ok']);
+        $roles = Role::whereIn('name', $request->roles ?? [])->pluck('id')->toArray();
+        $user->roles()->sync($roles);
+
+        if ($request->file('imageUpload')) {
+            $request->file('imageUpload')->storeAs(
+                'avatars',
+                $user->id,
+                'public'
+            );
+        } else {
+            Storage::copy('public/default-avatar.png', 'public/avatars/' . $user->id);
+        }
+
+        return view('admin.user.table', ['users' => User::all()]);
     }
 
     /**
@@ -76,7 +87,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return view('tables.user_table', ['users' => [User::find($id)]]);
+        $user = User::findOrFail($id);
+        return view('admin.user.view', ['user' => $user]);
     }
 
     /**
@@ -95,10 +107,12 @@ class UserController extends Controller
         $roles = Role::all()->map($func);
 
         foreach ($roles as $role) {
-            $role->checked = $user->roles->contains($role->name);
+            foreach ($user->roles as $u_role) {
+                $role->checked = $role->name == $u_role->name;
+            }
         }
 
-        return view('forms.user_edit', ['user' => $user, 'roles' => $roles]);
+        return view('admin.user.edit', ['user' => $user, 'roles' => $roles]);
     }
 
     /**
@@ -111,9 +125,10 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'roles.*' => 'exists:roles,name|distinct',
             'email' => "required|email|unique:users,email,$id|max:40",
             'password' => 'nullable|min:6|max:60|same:confirmPassword',
-            'imageFile' => ['nullable', 'mimes:jpeg,png', 'max:8192']
+            'imageUpload' => ['nullable', 'mimes:jpeg,png', 'max:16384']
         ]);
 
         $func = function ($r) {
@@ -128,10 +143,11 @@ class UserController extends Controller
             $user->password = Hash::make($request->newPpasswordassword);
         }
 
-        if ($request->file('imageFile')) {
-            $extension = $request->file('imageFile')->extension();
+        $roles = Role::whereIn('name', $request->roles ?? [])->pluck('id')->toArray();
+        $user->roles()->sync($roles);
 
-            $request->file('imageFile')->storeAs(
+        if ($request->file('imageUpload')) {
+            $request->file('imageUpload')->storeAs(
                 'avatars',
                 $id,
                 'public'
@@ -150,7 +166,7 @@ class UserController extends Controller
             $role->checked = $user->roles->contains($role->name);
         }
 
-        return view('forms.user_edit', ['user' => User::find($id), 'roles' => $roles, 'submitted' => 'ok']);
+        return view('admin.user.view', ['user' => User::findOrFail($user->id)]);
     }
 
     /**
@@ -163,5 +179,6 @@ class UserController extends Controller
     {
         $alumno = User::find($id);
         $alumno->delete();
+        return redirect('/admin/users');
     }
 }

@@ -18,7 +18,7 @@ class CreateEpisodesTable extends Migration
             $table->integer('number')->unsigned();
             $table->date('release_date');
             $table->string('video_path');
-            $table->foreignId('serie_id')->constrained()->restrictOnUpdate()->cascadeOnDelete();
+            $table->foreignId('anime_id')->constrained('anime')->restrictOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }

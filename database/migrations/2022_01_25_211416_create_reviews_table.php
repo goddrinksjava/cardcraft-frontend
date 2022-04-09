@@ -18,7 +18,7 @@ class CreateReviewsTable extends Migration
             $table->longText('comment');
             $table->tinyInteger('score')->unsigned();
             $table->foreignId('user_id')->constrained()->restrictOnUpdate()->cascadeOnDelete();
-            $table->foreignId('serie_id')->constrained()->restrictOnUpdate()->cascadeOnDelete();
+            $table->foreignId('anime_id')->constrained('anime')->restrictOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }

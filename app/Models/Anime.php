@@ -5,24 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Series extends Model
+class Anime extends Model
 {
     use HasFactory;
 
     public function genres()
     {
-        $this->belongsToMany(Genre::class, 'series_genres');
+        return $this->belongsToMany(Genre::class, 'anime_genres');
     }
 
     public function episodes()
     {
-        $this->hasMany(Episode::class);
+        return $this->hasMany(Episode::class);
     }
 
     public function reviews()
     {
-        $this->hasMany(Review::class);
+        return $this->hasMany(Review::class);
     }
 
-    protected $table = 'series';
+    protected $table = 'anime';
 }

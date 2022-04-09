@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
 use Illuminate\Http\Request;
 
-class RoleController extends Controller
+class ReviewController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +13,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return view('tables.role_table', ['roles' => Role::all()]);
+        //
     }
 
     /**
