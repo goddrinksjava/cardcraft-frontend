@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEpisodesTable extends Migration
+class CreateCharactersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateEpisodesTable extends Migration
      */
     public function up()
     {
-        Schema::create('episodes', function (Blueprint $table) {
+        Schema::create('characters', function (Blueprint $table) {
             $table->id();
-            $table->integer('number')->unsigned();
-            $table->date('release_date');
-            $table->string('video_path');
+            $table->string('name');
+            $table->longText('description');
             $table->foreignId('anime_id')->constrained('anime')->restrictOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
@@ -30,6 +29,6 @@ class CreateEpisodesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('episodes');
+        Schema::dropIfExists('characters');
     }
 }

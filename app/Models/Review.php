@@ -14,8 +14,8 @@ class Review extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function serie()
+    public function anime()
     {
-        return $this->belongsTo(Serie::class);
+        return $this->belongsTo(Anime::class);
     }
 }

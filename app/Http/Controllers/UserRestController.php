@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-class UserResourceController extends Controller
+class UserRestController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,20 +19,8 @@ class UserResourceController extends Controller
      */
     public function index()
     {
-        return view('admin.user.table', ['users' => User::all()]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $roles = Role::all()->map(function ($r) {
-            return $r->name;
-        });
-        return view('admin.user.create', ['roles' => $roles]);
+        $users = User::all();
+        return $users;
     }
 
     /**
@@ -75,7 +63,8 @@ class UserResourceController extends Controller
             Storage::copy('public/default-avatar.png', 'public/avatars/' . $user->id);
         }
 
-        return view('admin.user.table', ['users' => User::all()]);
+        $user = User::findOrFail($user->id);
+        return $user;
     }
 
     /**
@@ -87,29 +76,7 @@ class UserResourceController extends Controller
     public function show($id)
     {
         $user = User::findOrFail($id);
-        return view('admin.user.view', ['user' => $user]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $user = User::find($id);
-        $roles = Role::all()->map(function ($r) {
-            return (object)['name' => $r->name, 'checked' => false];
-        });
-
-        foreach ($roles as $role) {
-            foreach ($user->roles as $u_role) {
-                $role->checked = $role->name == $u_role->name;
-            }
-        }
-
-        return view('admin.user.edit', ['user' => $user, 'roles' => $roles]);
+        return $user;
     }
 
     /**
@@ -162,7 +129,8 @@ class UserResourceController extends Controller
             $role->checked = $user->roles->contains($role->name);
         }
 
-        return view('admin.user.view', ['user' => User::findOrFail($user->id)]);
+        $user = User::findOrFail($user->id);
+        return $user;
     }
 
     /**
@@ -175,6 +143,6 @@ class UserResourceController extends Controller
     {
         $user = User::find($id);
         $user->delete();
-        return redirect('/admin/users');
+        return "Ok";
     }
 }

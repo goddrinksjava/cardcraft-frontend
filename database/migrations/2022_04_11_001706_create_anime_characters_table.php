@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReviewsTable extends Migration
+class CreateAnimeCharactersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreateReviewsTable extends Migration
      */
     public function up()
     {
-        Schema::create('reviews', function (Blueprint $table) {
+        Schema::create('anime_characters', function (Blueprint $table) {
             $table->id();
-            $table->longText('comment');
-            $table->tinyInteger('score')->unsigned();
-            $table->foreignId('user_id')->constrained()->restrictOnUpdate()->cascadeOnDelete();
             $table->foreignId('anime_id')->constrained('anime')->restrictOnUpdate()->cascadeOnDelete();
+            $table->foreignId('character_id')->constrained()->restrictOnUpdate()->cascadeOnDelete();
             $table->timestamps();
-            $table->unique(array('user_id', 'anime_id'));
         });
     }
 
@@ -31,6 +28,6 @@ class CreateReviewsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reviews');
+        Schema::dropIfExists('anime_characters');
     }
 }

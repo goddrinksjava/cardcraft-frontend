@@ -58,7 +58,8 @@
                             label="Confirm Password" />
 
                         <div class="mt-6">
-                            <x-checkbox name="verifiedEmail" label="Verified Email" :checked="!is_null($user->email_verified_at)" />
+                            <x-checkbox name="verifiedEmail" label="Verified Email" :checked="!is_null($user->email_verified_at)"
+                                value="verifiedEmail" />
                         </div>
 
                         <fieldset class="mt-6">

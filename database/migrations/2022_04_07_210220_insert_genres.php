@@ -13,6 +13,7 @@ class InsertGenres extends Migration
         'Fantasy',
         'Psychological',
         'Drama',
+        'Comedy',
         'Romance'
     ];
 

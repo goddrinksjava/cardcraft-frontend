@@ -11,5 +11,17 @@
                 Anime
             </a>
         </div>
+
+        <div class="pt-4">
+            <a href="/admin/characters" class="text-5xl font-bold text-gray-700 dark:text-white hover:underline">
+                Characters
+            </a>
+        </div>
+
+        <div class="pt-4">
+            <a href="/admin/reviews" class="text-5xl font-bold text-gray-700 dark:text-white hover:underline">
+                Reviews
+            </a>
+        </div>
     </div>
 </x-layout>

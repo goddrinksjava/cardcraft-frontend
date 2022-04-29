@@ -7,7 +7,7 @@
             <span
                 class="bg-blue-100 text-blue-800 text-xs font-semibold  px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">{{ $score }}</span>
         </div>
-        <h5 class="text-gray-900 text-xl font-medium">{{ $name }}</h5>
+        <a href="/anime/1/info" class="text-gray-900 text-xl font-medium hover:underline">{{ $name }}</a>
     </div>
 
 </div>

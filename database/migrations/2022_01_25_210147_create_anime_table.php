@@ -17,8 +17,8 @@ class CreateAnimeTable extends Migration
             $table->id();
             $table->string('title');
             $table->longText('synopsis');
+            $table->integer('episodes')->unsigned();
             $table->date('release_date');
-            $table->decimal('score', 3, 2, true);
             $table->timestamps();
         });
     }

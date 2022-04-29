@@ -11,11 +11,11 @@
             <div class="flex-1">
                 <div>
                     <h2 class="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-700 dark:text-white">
-                        Join us to enjoy the best anime experience
+                        Sign up to access your favorite anime series
                     </h2>
                     <p class="mt-6 text-sm text-gray-400">
-                        Already have an account? <a href="/sign-in"
-                            class="text-blue-500 focus:outline-none focus:underline hover:underline">Sign in</a>.
+                        Already have an account? <a href="/login"
+                            class="text-blue-500 focus:outline-none focus:underline hover:underline">Log in</a>.
                     </p>
                 </div>
 

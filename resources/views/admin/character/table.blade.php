@@ -7,20 +7,20 @@
         for (const row of rows) {
             const id = row.id.split(':')[1];
             row.addEventListener("click", () => {
-                window.location.href = `/admin/anime/${id}`;
+                window.location.href = `/admin/characters/${id}`;
             });
         }
     </script>
 @endpush
 
-<x-layout title="Anime">
+<x-layout title="Characters">
     @include('shared.navbar')
 
     <div class="bg-white p-8 rounded-md w-full">
         <div class="flex items-center justify-between pb-6">
             <div class="flex items-center">
-                <h2 class="text-xl text-gray-600 font-semibold pr-2">Anime</h2>
-                <a href="/admin/anime/create">
+                <h2 class="text-xl text-gray-600 font-semibold pr-2">Characters</h2>
+                <a href="/admin/characters/create">
                     <img class="h-5 w-5" src="/svg/add.svg" alt="Create new user">
                 </a>
             </div>
@@ -49,67 +49,51 @@
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Poster
+                                    Picture
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Title
+                                    Name
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Synopsis
+                                    Description
                                 </th>
                                 <th
                                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Release Date
-                                </th>
-                                <th
-                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Episodes
-                                </th>
-                                <th
-                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Genres
+                                    Anime
                                 </th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            @foreach ($anime as $a)
+                            @foreach ($characters as $character)
                                 <tr class="userRow transition hover:bg-slate-50 cursor-pointer"
-                                    id="userId:{{ $a->id }}">
+                                    id="userId:{{ $character->id }}">
 
                                     <td class="px-5 py-5 border-b border-gray-200 text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">{{ $a->id }}</p>
+                                        <p class="text-gray-900 whitespace-no-wrap">{{ $character->id }}</p>
                                     </td>
 
                                     <td class="px-5 py-2 border-b border-gray-200 text-sm">
-                                        <div class="flex-shrink-0 w-[200px] h-[300px]">
+                                        <div class="flex-shrink-0 w-[200px] h-[200px]">
                                             <img class="w-full h-full object-cover"
-                                                src="/storage/posters/{{ $a->id }}" alt="Poster" />
+                                                src="/storage/characters/{{ $character->id }}"
+                                                alt="Character Picture" />
                                         </div>
                                     </td>
 
                                     <td class="px-5 py-5 border-b border-gray-200 text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">{{ $a->title }}</p>
+                                        <p class="text-gray-900 whitespace-no-wrap">{{ $character->name }}</p>
                                     </td>
 
                                     <td class="px-5 py-5 border-b border-gray-200 text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">{!! nl2br($a->synopsis) !!}</p>
+                                        <p class="text-gray-900 whitespace-no-wrap">{!! nl2br($character->description) !!}</p>
                                     </td>
 
                                     <td class="px-5 py-5 border-b border-gray-200 text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">{{ $a->release_date }}</p>
-                                    </td>
-
-                                    <td class="px-5 py-5 border-b border-gray-200 text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">{{ $a->episodes }}</p>
-                                    </td>
-
-                                    <td class="px-5 py-5 border-b border-gray-200 text-sm">
-                                        @foreach ($a->genres as $genre)
-                                            <p class="text-gray-900 whitespace-no-wrap">{{ $genre->name }}</p>
-                                        @endforeach
+                                        <p class="text-gray-900 whitespace-no-wrap">
+                                            {{ nl2br($character->anime->title) }}</p>
                                     </td>
                                 </tr>
                             @endforeach

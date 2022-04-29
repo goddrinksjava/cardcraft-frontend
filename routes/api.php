@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\AnimeRestController;
+use App\Http\Controllers\CharacterRestController;
+use App\Http\Controllers\ReviewRestController;
+use App\Http\Controllers\UserRestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+Route::resource('/anime', AnimeRestController::class);
+Route::resource('/characters', CharacterRestController::class);
+Route::resource('/reviews', ReviewRestController::class);
+Route::resource('/users', UserRestController::class);

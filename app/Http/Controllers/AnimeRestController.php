@@ -7,7 +7,7 @@ use App\Models\Genre;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class AnimeResourceController extends Controller
+class AnimeRestController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,19 +16,8 @@ class AnimeResourceController extends Controller
      */
     public function index()
     {
-        return view('admin.anime.table', ['anime' => Anime::all()]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('admin.anime.create', ['genres' => Genre::all()->map(function ($r) {
-            return $r->name;
-        })]);
+        $anime = Anime::with('genres')->get();
+        return $anime;
     }
 
     /**
@@ -74,7 +63,8 @@ class AnimeResourceController extends Controller
             'public'
         );
 
-        return view('admin.anime.table', ['anime' => Anime::with('genres')->get()]);
+        $anime = Anime::findOrFail($anime->id);
+        return $anime;
     }
 
     /**
@@ -86,29 +76,7 @@ class AnimeResourceController extends Controller
     public function show($id)
     {
         $anime = Anime::findOrFail($id);
-        return view('admin.anime.view', ['anime' => $anime]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $anime = Anime::find($id);
-        $genres = Genre::all()->map(function ($genre) {
-            return (object)['name' => $genre->name, 'checked' => false];
-        });
-
-        foreach ($genres as $genre) {
-            foreach ($anime->genres as $anime_genre) {
-                $genre->checked = $genre->name == $anime_genre->name;
-            }
-        }
-
-        return view('admin.anime.edit', ['anime' => $anime, 'genres' => $genres]);
+        return $anime;
     }
 
     /**
@@ -158,7 +126,8 @@ class AnimeResourceController extends Controller
         }
 
 
-        return view('admin.anime.view', ['anime' => Anime::findOrFail($anime->id)]);
+        $anime = Anime::findOrFail($anime->id);
+        return $anime;
     }
 
     /**
@@ -171,6 +140,6 @@ class AnimeResourceController extends Controller
     {
         $anime = Anime::find($id);
         $anime->delete();
-        return redirect('/admin/anime');
+        return "Ok";
     }
 }
