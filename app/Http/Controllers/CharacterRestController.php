@@ -15,10 +15,16 @@ class CharacterRestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $characters = Character::all();
-        return $characters;
+        $root = $request->root();
+
+        $characters = Character::all()->map(function ($character) use (&$root) {
+            $character->picture = "$root/storage/characters/$character->id";
+            return $character;
+        });
+
+        return $characters->toJson(JSON_UNESCAPED_SLASHES);
     }
 
     /**
@@ -60,10 +66,13 @@ class CharacterRestController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
+        $root = $request->root();
+
         $character = Character::findOrFail($id);
-        return $character;
+        $character->picture = "$root/storage/characters/$character->id";
+        return $character->toJson(JSON_UNESCAPED_SLASHES);
     }
 
     /**

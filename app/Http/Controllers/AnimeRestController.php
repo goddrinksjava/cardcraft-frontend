@@ -14,10 +14,16 @@ class AnimeRestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $anime = Anime::with('genres')->get();
-        return $anime;
+        $root = $request->root();
+
+        $anime = Anime::with('genres')->get()->map(function ($anime) use (&$root) {
+            $anime->poster = "$root/storage/posters/$anime->id";
+            return $anime;
+        });
+
+        return $anime->toJson(JSON_UNESCAPED_SLASHES);
     }
 
     /**
@@ -73,10 +79,13 @@ class AnimeRestController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
+        $root = $request->root();
+
         $anime = Anime::findOrFail($id);
-        return $anime;
+        $anime->poster = "$root/storage/posters/$anime->id";
+        return $anime->toJson(JSON_UNESCAPED_SLASHES);
     }
 
     /**

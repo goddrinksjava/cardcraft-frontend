@@ -17,10 +17,16 @@ class UserRestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
-        return $users;
+        $root = $request->root();
+
+        $users = User::all()->map(function ($user) use (&$root) {
+            $user->avatar =  "$root/storage/avatars/$user->id";
+            return $user;
+        });
+
+        return $users->toJson(JSON_UNESCAPED_SLASHES);
     }
 
     /**
@@ -73,10 +79,13 @@ class UserRestController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
+        $root = $request->root();
+
         $user = User::findOrFail($id);
-        return $user;
+        $user->avatar =  "$root/storage/avatars/$user->id";
+        return $user->toJson(JSON_UNESCAPED_SLASHES);
     }
 
     /**
