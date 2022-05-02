@@ -11,6 +11,16 @@ use Illuminate\Http\Request;
 class CharacterRestController extends Controller
 {
     /**
+     * Create a new CharacterRestController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['index', 'show']]);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

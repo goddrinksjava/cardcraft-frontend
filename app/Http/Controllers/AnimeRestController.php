@@ -10,6 +10,16 @@ use Illuminate\Http\Request;
 class AnimeRestController extends Controller
 {
     /**
+     * Create a new AnimeRestController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['index', 'show']]);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

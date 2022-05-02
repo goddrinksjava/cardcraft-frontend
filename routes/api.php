@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AnimeRestController;
+use App\Http\Controllers\AuthRestController;
 use App\Http\Controllers\CharacterRestController;
 use App\Http\Controllers\ReviewRestController;
 use App\Http\Controllers\UserRestController;
@@ -18,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/login', [AuthRestController::class, 'login']);
+Route::post('/me', [AuthRestController::class, 'me']);
 
 Route::resource('/anime', AnimeRestController::class);
 Route::resource('/characters', CharacterRestController::class);

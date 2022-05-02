@@ -13,6 +13,16 @@ use Illuminate\Support\Facades\Storage;
 class UserRestController extends Controller
 {
     /**
+     * Create a new UserRestController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['index', 'show']]);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
